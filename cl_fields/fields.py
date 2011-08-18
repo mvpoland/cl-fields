@@ -46,3 +46,13 @@ class JSONField(models.TextField):
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
         return self.get_db_prep_value(value)
+
+
+try:
+    import south
+except ImportError:
+    pass
+else:
+    # Since we inherit from a TextField, we don't need to add new rules
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ['^cl_fields.fields.JSONField'])
