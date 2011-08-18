@@ -38,7 +38,7 @@ class JSONField(models.TextField):
             value = json.loads(value)
         return value
 
-    def get_db_prep_save(self, value):
+    def get_db_prep_save(self, value, connection=None):
         if value is None:
             return None
         return json.dumps(value)
