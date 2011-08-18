@@ -2,6 +2,7 @@ from django import forms
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils import simplejson as json
+from django.utils.translation import ugettext_lazy as _
 
 
 class JSONWidget(forms.Textarea):
