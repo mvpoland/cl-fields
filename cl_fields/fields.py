@@ -1,5 +1,6 @@
-from django.db import models
 from django import forms
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db import models
 from django.utils import simplejson as json
 
 
@@ -29,6 +30,7 @@ class JSONFormField(forms.CharField):
 
 class JSONField(models.TextField):
     __metaclass__ = models.SubfieldBase
+    description = _(u'JSON data')
 
     def formfield(self, **kwargs):
         if 'form_class' not in kwargs:
@@ -43,7 +45,7 @@ class JSONField(models.TextField):
     def get_db_prep_save(self, value, connection=None):
         if value is None:
             return None
-        return json.dumps(value)
+        return json.dumps(value, cls=DjangoJSONEncoder)
 
     def value_to_string(self, obj):
         value = self._get_val_from_obj(obj)
