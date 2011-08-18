@@ -12,7 +12,8 @@ class JSONWidget(forms.Textarea):
 
 class JSONFormField(forms.CharField):
     def __init__(self, *args, **kwargs):
-        kwargs['widget'] = JSONWidget
+        if 'widget' not in kwargs:
+            kwargs['widget'] = JSONWidget
         super(JSONFormField, self).__init__(*args, **kwargs)
 
     def clean(self, value):
@@ -30,8 +31,9 @@ class JSONField(models.TextField):
     __metaclass__ = models.SubfieldBase
 
     def formfield(self, **kwargs):
-        return super(JSONField, self).formfield(form_class=JSONFormField,
-                                                **kwargs)
+        if 'form_class' not in kwargs:
+            kwargs['form_class'] = JSONFormField
+        return super(JSONField, self).formfield(**kwargs)
 
     def to_python(self, value):
         if isinstance(value, basestring):
