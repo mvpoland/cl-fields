@@ -40,12 +40,14 @@ class JSONField(models.TextField):
 
     def to_python(self, value):
         if isinstance(value, basestring):
+            if value == '':
+                return None
             value = json.loads(value)
         return value
 
     def get_db_prep_save(self, value, connection=None):
-        if value is None:
-            return None
+        if value is None or value == '':
+            return None if self.null else ''
         return json.dumps(value, cls=DjangoJSONEncoder)
 
     def value_to_string(self, obj):
